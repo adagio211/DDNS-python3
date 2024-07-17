@@ -4,6 +4,11 @@ from re import compile
 from os import name as os_name, popen
 from socket import socket, getaddrinfo, gethostname, AF_INET, AF_INET6, SOCK_DGRAM
 from logging import debug, error
+
+class Config:
+    IPV4_RESOLVER = "1.1.1.1"
+    IPV6_RESOLVER = "1:1:1:1:1:1:1:1"
+
 try:
     # python2
     from urllib2 import urlopen, Request
@@ -20,7 +25,8 @@ IPV6_REG = r'((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){
 
 def default_v4():  # 默认连接外网的ipv4
     s = socket(AF_INET, SOCK_DGRAM)
-    s.connect(("1.1.1.1", 53))
+    # s.connect(("1.1.1.1", 53))
+    s.connect((Config.IPV4_RESOLVER, 53))
     ip = s.getsockname()[0]
     s.close()
     return ip
@@ -28,7 +34,8 @@ def default_v4():  # 默认连接外网的ipv4
 
 def default_v6():  # 默认连接外网的ipv6
     s = socket(AF_INET6, SOCK_DGRAM)
-    s.connect(('1:1:1:1:1:1:1:1', 8))
+    # s.connect(('1:1:1:1:1:1:1:1', 8))
+    s.connect((Config.IPV6_RESOLVER, 8))
     ip = s.getsockname()[0]
     s.close()
     return ip

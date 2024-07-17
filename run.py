@@ -13,6 +13,7 @@ from logging import DEBUG, basicConfig, info, warning, error, debug
 from subprocess import check_output
 
 import sys
+import datetime
 
 from util import ip
 from util.cache import Cache
@@ -99,7 +100,7 @@ def update_ip(ip_type, cache, dns, proxy_list):
         error('Fail to get %s address!', ipname)
         return False
     elif cache and (address == cache[ipname]):
-        print('.', end=" ")  # 缓存命中
+        print('[%s] Current IP [ %s ] is same as dns record, Do not need update !' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), address))  # 缓存命中
         return True
     record_type = (ip_type == '4') and 'A' or 'AAAA'
     update_fail = False  # https://github.com/NewFuture/DDNS/issues/16

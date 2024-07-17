@@ -56,6 +56,9 @@ def init_config(description, doc, version):
                         const=True, help="debug mode [是否开启调试,默认否]", )
     parser.add_argument('--cache',  type=str2bool, nargs='?',
                         const=True, help="enable cache [是否缓存记录,默认是]")
+    
+    parser.add_argument('--ipv4-resolver', help="IPV4 域名解析IP地址，默认为1.1.1.1，可以设置其他的值，比如223.5.5.5")
+    parser.add_argument('--ipv6-resolver', help="IPV6 域名解析IP地址，默认为1:1:1:1:1:1:1:1，可以设置其他的值，比如2400:3200::1")
 
     __cli_args = parser.parse_args()
     is_configfile_optional = get_config("token") or get_config("id")
@@ -98,6 +101,8 @@ def __load_config(path="config.json", skip_auto_generation=False):
                 "ttl": None,
                 "proxy": None,
                 "debug": False,
+                "ipv4Resolver": "1.1.1.1",
+                "ipv6Resolver": ":1:1:1:1:1:1:1",
             }
             dumpjson(configure, configfile, indent=2, sort_keys=True)
             sys.stdout.write(
